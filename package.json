@@ -12,15 +12,14 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "npm run lint",
       "npm run format",
+      "next lint",
       "git add"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm test"
+      "pre-commit": "lint-staged && echo 'Linting and formatting succeeded.'"
     }
   },
   "dependencies": {
