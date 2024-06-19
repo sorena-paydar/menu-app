@@ -6,6 +6,7 @@ const useApiRequest = <T>({
   route,
   method,
   initialData,
+  requestData,
 }: UseApiRequestOptions): UseApiRequestResponse<T> => {
   const [data, setData] = useState<T | null>(initialData ?? null);
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,7 @@ const useApiRequest = <T>({
       const response = await axios.request<T>({
         url: route,
         method,
+        data: requestData,
       });
 
       setData(response.data);
