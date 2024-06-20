@@ -30,6 +30,12 @@ const registerTabs: RegisterTabs = {
 };
 
 export default function Register() {
+  const [tabValue, setTabValue] = useState<keyof RegisterTabs>('signup');
+
+  const switchTab = (tab: keyof RegisterTabs) => {
+    setTabValue(tab);
+  };
+
   const authToken = Cookies.get(COOKIES['authToken']);
 
   if (authToken) {
@@ -37,12 +43,6 @@ export default function Register() {
 
     return <span />;
   }
-
-  const [tabValue, setTabValue] = useState<keyof RegisterTabs>('signup');
-
-  const switchTab = (tab: keyof RegisterTabs) => {
-    setTabValue(tab);
-  };
 
   return (
     <div
