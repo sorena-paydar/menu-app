@@ -9,6 +9,9 @@ import { useState } from 'react';
 import { Signup } from '@/app/register/components/signup';
 import { Login } from '@/app/register/components/login';
 import classnames from 'classnames';
+import Cookies from 'js-cookie';
+import { COOKIES } from '@/constants/auth';
+import { ROUTES } from '@/constants/routes';
 
 export type RegisterTabs = Record<
   'signup' | 'login',
@@ -27,6 +30,14 @@ const registerTabs: RegisterTabs = {
 };
 
 export default function Register() {
+  const authToken = Cookies.get(COOKIES['authToken']);
+
+  if (authToken) {
+    window.location.href = ROUTES['home'];
+
+    return <span />;
+  }
+
   const [tabValue, setTabValue] = useState<keyof RegisterTabs>('signup');
 
   const switchTab = (tab: keyof RegisterTabs) => {

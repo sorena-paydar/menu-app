@@ -1,6 +1,10 @@
+'use client';
+
 import { useState } from 'react';
 import axios from 'axios';
 import { UseApiRequestOptions, UseApiRequestResponse } from '@/types/api';
+import Cookies from 'js-cookie';
+import { COOKIES } from '@/constants/auth';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
@@ -13,6 +17,8 @@ const useApiRequest = <T>({
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const authToken = Cookies.get(COOKIES['authToken']);
+
   const request = async (data?: any) => {
     setPending(true);
     try {
@@ -20,6 +26,11 @@ const useApiRequest = <T>({
         url: apiUrl + route,
         method,
         data,
+        ...(authToken && {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }),
       });
 
       successCallback?.(response.data);

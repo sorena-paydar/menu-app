@@ -10,6 +10,7 @@ import { useSnackbar } from '@/hooks/useSnackbar';
 import { LoadingButton } from '@mui/lab';
 import { RegisterTabs } from '@/app/register/page';
 import { delay } from 'lodash';
+import { COOKIES } from '@/constants/auth';
 
 interface Props {
   switchTab: (value: keyof RegisterTabs) => void;
@@ -30,7 +31,7 @@ export const Signup = ({ switchTab }: Props) => {
     method: 'post',
     route: POST_SIGN_UP_EP,
     successCallback: (data: { data: { token: string } }) => {
-      Cookies.set('auth-token', data.data.token);
+      Cookies.set(COOKIES['authToken'], data.data.token);
       generateSnackbar({
         message: 'Signed In Successfully.',
         variant: 'success',

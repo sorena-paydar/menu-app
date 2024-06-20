@@ -10,6 +10,7 @@ import { POST_LOG_IN_EP } from '@/app/register/API/endpoint';
 import Cookies from 'js-cookie';
 import { delay } from 'lodash';
 import { RegisterTabs } from '@/app/register/page';
+import { COOKIES } from '@/constants/auth';
 
 interface Props {
   switchTab: (value: keyof RegisterTabs) => void;
@@ -31,7 +32,7 @@ export const Login = ({ switchTab }: Props) => {
     route: POST_LOG_IN_EP,
     successCallback: (data: { data: { token: string } }) => {
       console.log({ data });
-      Cookies.set('auth-token', data.data.token);
+      Cookies.set(COOKIES['authToken'], data.data.token);
       generateSnackbar({
         message: 'Logged In Successfully.',
         variant: 'success',
