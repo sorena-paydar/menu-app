@@ -164,7 +164,7 @@ export default function BranchDetails({
                 type="submit"
                 loading={editBranchPending}
               >
-                Submit
+                Submit XD
               </LoadingButton>
             </div>
           </form>
