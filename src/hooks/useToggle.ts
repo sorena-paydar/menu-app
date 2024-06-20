@@ -1,15 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-interface Props {
-  initialState?: boolean;
-}
+export function useToggle(defaultValue = false) {
+  const [isOpen, setIsOpen] = useState(defaultValue);
 
-export function useToggle({ initialState = false }: Props) {
-  const [isOpen, setIsOpen] = useState(initialState);
-
-  const onOpen = () => setIsOpen(true);
-  const onClose = () => setIsOpen(false);
-  const onToggle = () => setIsOpen((prevState) => !prevState);
+  const onOpen = useCallback(() => setIsOpen(true), []);
+  const onClose = useCallback(() => setIsOpen(false), []);
+  const onToggle = useCallback(() => setIsOpen((prevState) => !prevState), []);
 
   return {
     isOpen,
