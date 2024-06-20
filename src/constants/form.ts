@@ -24,4 +24,22 @@ export const ERROR_MESSAGES = {
     currentPasswordRequired: 'Current passwords required',
     newPasswordConfirmRequired: 'Confirm new password',
   },
+  branch: {
+    name: {
+      required: 'Branch name is required',
+    },
+    location: {
+      address: {
+        required: 'Branch location address is required',
+      },
+      coordinates: {
+        lat: {
+          required: 'Branch location coordinates lat is required',
+        },
+        lng: {
+          required: 'Branch location coordinates lng is required',
+        },
+      },
+    },
+  },
 };
