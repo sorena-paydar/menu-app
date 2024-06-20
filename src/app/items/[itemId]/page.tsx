@@ -8,12 +8,9 @@ import { Item } from '@/types/item';
 import { GET_ITEM_DETAILS_EP } from '@/app/items/API/endpoint';
 import { format } from 'date-fns';
 import { LoadingButton } from '@mui/lab';
+import withAuth from '@/hoc/withAuth';
 
-export default function ItemDetails({
-  params: { itemId },
-}: {
-  params: { itemId: string };
-}) {
+function ItemDetails({ params: { itemId } }: { params: { itemId: string } }) {
   const { generateSnackbar } = useSnackbar();
 
   const [item, setItem] = useState<Item>();
@@ -77,3 +74,5 @@ export default function ItemDetails({
     </main>
   );
 }
+
+export default withAuth(ItemDetails);

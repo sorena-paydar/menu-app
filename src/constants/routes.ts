@@ -5,10 +5,3 @@ export const ROUTES = {
   branches: '/branches',
   items: '/items',
 };
-
-export const PROTECTED_ROUTES = [
-  ROUTES.home,
-  ROUTES.profile,
-  ROUTES.branches,
-  ROUTES.items,
-];

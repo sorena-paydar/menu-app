@@ -18,8 +18,9 @@ import { Skeleton } from '@/components/skeleton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
+import withAuth from '@/hoc/withAuth';
 
-export default function Home() {
+function Home() {
   const [branches, setBranches] = useState<Branch[]>([]);
 
   const { request: getBranchesRequest, pending: getBranchesPending } = useAPI({
@@ -162,3 +163,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default withAuth(Home);

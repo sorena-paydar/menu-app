@@ -13,8 +13,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { branchSchema } from '@/constants/branch';
 import Typography from '@mui/material/Typography';
+import withAuth from '@/hoc/withAuth';
 
-export default function BranchDetails({
+function BranchDetails({
   params: { branchId },
 }: {
   params: { branchId: string };
@@ -173,3 +174,5 @@ export default function BranchDetails({
     </main>
   );
 }
+
+export default withAuth(BranchDetails);
