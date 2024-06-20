@@ -3,8 +3,9 @@ import { Avatar, Menu } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { selectProfile } from '@/store/slices/profile';
-import Typography from '@mui/material/Typography';
 import { LogoutButton } from '@/components/profileDropdown/logoutButton';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes';
 
 const ProfileAvatar = styled(Avatar)({
   cursor: 'pointer',
@@ -36,7 +37,7 @@ const ProfileDropdown: React.FC = () => {
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <div className="flex flex-col gap-y-3 px-2">
-            <Typography variant="body1">{profile.email}</Typography>
+            <Link href={ROUTES['profile']}>Profile</Link>
             <LogoutButton />
           </div>
         </Menu>

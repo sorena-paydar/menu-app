@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { passwordSchema } from '@/constants/password';
 
 const ERROR_MESSAGES = {
   email: {
@@ -7,11 +8,6 @@ const ERROR_MESSAGES = {
   },
   password: {
     required: 'Password is required',
-    uppercaseLetter: 'Password must contain at least one uppercase letter',
-    number: 'Password must contain at least one number',
-    specialCharacter: 'Password must contain at least one special character',
-    min: (length: number) =>
-      `Password must be at least ${length} characters long`,
   },
   firstName: {
     required: 'First name is required',
@@ -28,20 +24,12 @@ const ERROR_MESSAGES = {
   },
 };
 
-const PASSWORD_MIN_LENGTH: number = 8;
-
 export const signupSchema = yup.object().shape({
   email: yup
     .string()
     .email(ERROR_MESSAGES.email.format)
     .required(ERROR_MESSAGES.email.required),
-  password: yup
-    .string()
-    .required(ERROR_MESSAGES.password.required)
-    .matches(/[A-Z]/, ERROR_MESSAGES.password.uppercaseLetter)
-    .matches(/\d/, ERROR_MESSAGES.password.number)
-    .matches(/[@$!%*?&#]/, ERROR_MESSAGES.password.specialCharacter)
-    .min(PASSWORD_MIN_LENGTH, ERROR_MESSAGES.password.min(PASSWORD_MIN_LENGTH)),
+  password: passwordSchema,
   firstName: yup.string().required(ERROR_MESSAGES.firstName.required),
   lastName: yup.string().required(ERROR_MESSAGES.lastName.required),
   brandName: yup.string().required(ERROR_MESSAGES.brandName.required),
