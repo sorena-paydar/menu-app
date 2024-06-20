@@ -50,3 +50,11 @@ export const signupSchema = yup.object().shape({
     .matches(/^[0-9]{10}$/, ERROR_MESSAGES.phoneNumber.digit)
     .required(ERROR_MESSAGES.phoneNumber.required),
 });
+
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email(ERROR_MESSAGES.email.format)
+    .required(ERROR_MESSAGES.email.required),
+  password: yup.string().required(ERROR_MESSAGES.password.required),
+});

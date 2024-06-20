@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { useSnackbar } from '@/hooks/useSnackbar';
 import { LoadingButton } from '@mui/lab';
 import { RegisterTabs } from '@/app/register/page';
+import { delay } from 'lodash';
 
 interface Props {
   switchTab: (value: keyof RegisterTabs) => void;
@@ -34,7 +35,8 @@ export const Signup = ({ switchTab }: Props) => {
         message: 'Signed In Successfully.',
         variant: 'success',
       });
-      window.location.href = '/';
+
+      delay(() => (window.location.href = '/'), 1000);
     },
     failedCallback: (error: { message: string }) => {
       console.log(error.message);

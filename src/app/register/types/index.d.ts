@@ -6,3 +6,8 @@ export type SignupFormInputs = {
   brandName: string;
   phoneNumber: string;
 };
+
+export type LoginFormInputs = {
+  email: string;
+  password: string;
+};

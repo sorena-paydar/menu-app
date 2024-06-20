@@ -36,10 +36,10 @@ export default function Register() {
   return (
     <div
       className={classnames(
-        'min-h-screen flex flex-col justify-center items-center',
+        'min-h-screen flex flex-col justify-center items-center px-8',
       )}
     >
-      <Box className="border border-gray-200 rounded-lg px-5 py-4">
+      <Box className="border border-gray-200 rounded-lg px-5 py-4 w-full">
         <TabContext value={tabValue}>
           <Box>
             <TabList
@@ -68,7 +68,7 @@ export default function Register() {
           </TabPanel>
 
           <TabPanel value={registerTabs.login.value} className="px-0 pb-0 pt-5">
-            <Login />
+            <Login switchTab={switchTab} />
           </TabPanel>
         </TabContext>
       </Box>
