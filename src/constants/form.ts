@@ -42,4 +42,21 @@ export const ERROR_MESSAGES = {
       },
     },
   },
+  item: {
+    name: {
+      required: 'Item name is required',
+    },
+    picture: {
+      required: 'Item image is required',
+    },
+    price: {
+      type: 'Price must be a number',
+      required: 'Item price is required',
+    },
+    description: {
+      max: (maxCharacter: number) =>
+        `Description cannot be more than ${maxCharacter} characters`,
+      required: 'Item description is required',
+    },
+  },
 };

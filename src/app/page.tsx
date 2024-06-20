@@ -9,7 +9,7 @@ import { useSnackbar } from '@/hooks/useSnackbar';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Branch, CreateBranchInputs } from '@/types/branch';
-import { createBranchSchema } from '@/constants/branch';
+import { branchSchema } from '@/constants/branch';
 import { Popup } from '@/components/popup';
 import { LoadingButton } from '@mui/lab';
 import AddIcon from '@mui/icons-material/Add';
@@ -44,7 +44,7 @@ export default function Home() {
     handleSubmit,
     formState: { errors },
   } = useForm<CreateBranchInputs>({
-    resolver: yupResolver(createBranchSchema),
+    resolver: yupResolver(branchSchema),
     defaultValues: {
       location: {
         coordinates: {
@@ -121,6 +121,16 @@ export default function Home() {
           ))}
         </div>
       )}
+
+      <div className="flex justify-between mt-8">
+        <Typography variant="h5">Items</Typography>
+
+        <Link href={ROUTES['items']}>
+          <Button variant="contained" color="inherit">
+            <Typography variant="body1">Go to items</Typography>
+          </Button>
+        </Link>
+      </div>
 
       <Popup open={isOpen} onClose={onClose} title="Create New Branch">
         <form onSubmit={handleSubmit(onSubmit)}>

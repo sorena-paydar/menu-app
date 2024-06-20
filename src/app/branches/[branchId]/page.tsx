@@ -8,11 +8,10 @@ import { useSnackbar } from '@/hooks/useSnackbar';
 import { Skeleton } from '@/components/skeleton';
 import { LoadingButton } from '@mui/lab';
 import { Button, TextField } from '@mui/material';
-import { Popup } from '@/components/popup';
 import { useToggle } from '@/hooks/useToggle';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createBranchSchema } from '@/constants/branch';
+import { branchSchema } from '@/constants/branch';
 import Typography from '@mui/material/Typography';
 
 export default function BranchDetails({
@@ -37,7 +36,7 @@ export default function BranchDetails({
     handleSubmit,
     formState: { errors },
   } = useForm<CreateBranchInputs>({
-    resolver: yupResolver(createBranchSchema),
+    resolver: yupResolver(branchSchema),
     defaultValues: {
       location: {
         coordinates: {
