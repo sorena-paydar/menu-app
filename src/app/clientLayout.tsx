@@ -5,6 +5,8 @@ import { Navbar } from '@/components/navbar';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 import AuthLayout from '@/app/authLayout';
+import { theme } from '@/mui/theme';
+import { ThemeProvider } from '@mui/system';
 
 export default function ClientLayout({
   children,
@@ -13,10 +15,12 @@ export default function ClientLayout({
 }>) {
   return (
     <Provider store={store}>
-      <SnackbarProvider maxSnack={3}>
-        <Navbar />
-        <AuthLayout>{children}</AuthLayout>
-      </SnackbarProvider>
+      <ThemeProvider theme={theme}>
+        <SnackbarProvider maxSnack={3}>
+          <Navbar />
+          <AuthLayout>{children}</AuthLayout>
+        </SnackbarProvider>
+      </ThemeProvider>
     </Provider>
   );
 }
