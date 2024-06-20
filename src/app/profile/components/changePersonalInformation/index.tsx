@@ -101,7 +101,7 @@ export const ChangePersonalInformation = () => {
           color="success"
           loading={pending}
         >
-          Change Password
+          Change Personal Information
         </LoadingButton>
       </form>
     </div>

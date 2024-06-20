@@ -1,3 +1,5 @@
+import { Branch } from '@/types/branch';
+
 export type CookieKeys = 'authToken';
 
 export interface ProfileRequest {
@@ -12,5 +14,5 @@ export interface UserProfile {
   email: string;
   phoneNumber: string;
   brandName: string;
-  branches: any[];
+  branches: Branch[];
 }
