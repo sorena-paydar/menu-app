@@ -3,7 +3,7 @@
 import Typography from '@mui/material/Typography';
 import useAPI from '@/hooks/useAPI';
 import { GET_BRANCHES_EP, POST_CREATE_BRANCH_EP } from '@/API/endpoint';
-import { Button, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import { useToggle } from '@/hooks/useToggle';
 import { useSnackbar } from '@/hooks/useSnackbar';
 import { useForm } from 'react-hook-form';
@@ -15,6 +15,9 @@ import { LoadingButton } from '@mui/lab';
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/skeleton';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { ROUTES } from '@/constants/routes';
+import Link from 'next/link';
 
 export default function Home() {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -75,7 +78,6 @@ export default function Home() {
   });
 
   const onSubmit = (data: CreateBranchInputs) => {
-    console.log({ data });
     createBranchRequest(data);
   };
 
@@ -102,7 +104,15 @@ export default function Home() {
               className="border border-gray-200 rounded-lg px-3 py-2"
               key={branch._id}
             >
-              <Typography variant="body1">{branch.name}</Typography>
+              <div className="flex justify-between items-center">
+                <Typography variant="body1">{branch.name}</Typography>
+
+                <Link href={ROUTES['branches'] + `/${branch._id}`}>
+                  <IconButton>
+                    <ArrowForwardIosIcon />
+                  </IconButton>
+                </Link>
+              </div>
 
               <Typography variant="body2" color="textSecondary">
                 {branch.location.address}
