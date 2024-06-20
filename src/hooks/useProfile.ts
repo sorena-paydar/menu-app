@@ -6,13 +6,22 @@ import { useEffect } from 'react';
 import { PROTECTED_ROUTES, ROUTES } from '@/constants/routes';
 import Cookies from 'js-cookie';
 import { COOKIES } from '@/constants/auth';
+import { setProfile } from '@/store/slices/profile';
+import { useDispatch } from 'react-redux';
+import { ProfileRequest } from '@/types/profile';
 
-export function useProfile() {
-  const { request: getProfile, pending } = useAPI({
+export function useProfile(): ProfileRequest {
+  const dispatch = useDispatch();
+
+  const {
+    request: getProfile,
+    pending,
+    error,
+  } = useAPI({
     method: 'GET',
     route: GET_PROFILE_EP,
-    successCallback: (data) => {
-      console.log({ data });
+    successCallback: ({ data }) => {
+      dispatch(setProfile(data));
     },
   });
 
@@ -30,5 +39,5 @@ export function useProfile() {
     }
   }, []);
 
-  return {};
+  return { pending, error };
 }

@@ -2,19 +2,21 @@
 
 import { SnackbarProvider } from '@/hooks/useSnackbar';
 import { Navbar } from '@/components/navbar';
-import { useProfile } from '@/hooks/useProfile';
+import { Provider } from 'react-redux';
+import { store } from '@/store';
+import AuthLayout from '@/app/authLayout';
 
 export default function ClientLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const {} = useProfile();
-
   return (
-    <SnackbarProvider maxSnack={3}>
-      <Navbar />
-      {children}
-    </SnackbarProvider>
+    <Provider store={store}>
+      <SnackbarProvider maxSnack={3}>
+        <Navbar />
+        <AuthLayout>{children}</AuthLayout>
+      </SnackbarProvider>
+    </Provider>
   );
 }
