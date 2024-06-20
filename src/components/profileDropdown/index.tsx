@@ -28,20 +28,18 @@ const ProfileDropdown: React.FC = () => {
     <div>
       <ProfileAvatar onClick={handleMenuOpen} />
 
-      {profile && (
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <div className="flex flex-col gap-y-3 px-2">
-            <Link href={ROUTES['profile']}>Profile</Link>
-            <LogoutButton />
-          </div>
-        </Menu>
-      )}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <div className="flex flex-col gap-y-3 px-2">
+          <Link href={ROUTES['profile']}>Profile</Link>
+          <LogoutButton />
+        </div>
+      </Menu>
     </div>
   );
 };
