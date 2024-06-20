@@ -3,12 +3,12 @@
 import useAPI from '@/hooks/useAPI';
 import { GET_PROFILE_EP } from '@/API/endpoint';
 import { useEffect } from 'react';
-import { PROTECTED_ROUTES, ROUTES } from '@/constants/routes';
-import Cookies from 'js-cookie';
-import { COOKIES } from '@/constants/auth';
 import { setProfile } from '@/store/slices/profile';
 import { useDispatch } from 'react-redux';
 import { ProfileRequest } from '@/types/profile';
+import Cookies from 'js-cookie';
+import { COOKIES } from '@/constants/auth';
+import { ROUTES } from '@/constants/routes';
 
 export function useProfile(): ProfileRequest {
   const dispatch = useDispatch();
@@ -26,17 +26,14 @@ export function useProfile(): ProfileRequest {
   });
 
   useEffect(() => {
-    if (PROTECTED_ROUTES.includes(window.location.pathname)) {
-      const authToken = Cookies.get(COOKIES['authToken']);
+    const authToken = Cookies.get(COOKIES['authToken']);
 
-      if (!authToken) {
-        window.location.href = ROUTES['register'];
-
-        return;
-      }
-
-      getProfile();
+    if (!authToken) {
+      window.location.href = ROUTES['register'];
+      return;
     }
+
+    getProfile();
   }, []);
 
   return { pending, error };

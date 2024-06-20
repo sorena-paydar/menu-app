@@ -18,8 +18,9 @@ import { Skeleton } from '@/components/skeleton';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import withAuth from '@/hoc/withAuth';
 
-export default function Items() {
+function Items() {
   const { generateSnackbar } = useSnackbar();
 
   const [items, setItems] = useState<Item[]>([]);
@@ -181,3 +182,5 @@ export default function Items() {
     </main>
   );
 }
+
+export default withAuth(Items);
