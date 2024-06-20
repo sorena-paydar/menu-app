@@ -1,15 +1,14 @@
 import { Method } from 'axios';
 
 export interface UseApiRequestResponse<T> {
-  data: T | null;
-  loading: boolean;
+  pending: boolean;
   error: string | null;
-  fetchData: () => Promise<void>;
+  request: (data?: unknown) => Promise<void>;
 }
 
 export interface UseApiRequestOptions {
   route: string;
   method: Method;
-  initialData?: any;
-  requestData?: any;
+  successCallback?: (data: any) => void;
+  failedCallback?: (error: any) => void;
 }

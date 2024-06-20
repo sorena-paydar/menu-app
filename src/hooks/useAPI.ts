@@ -2,39 +2,41 @@ import { useState } from 'react';
 import axios from 'axios';
 import { UseApiRequestOptions, UseApiRequestResponse } from '@/types/api';
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+
 const useApiRequest = <T>({
   route,
   method,
-  initialData,
-  requestData,
+  successCallback,
+  failedCallback,
 }: UseApiRequestOptions): UseApiRequestResponse<T> => {
-  const [data, setData] = useState<T | null>(initialData ?? null);
-  const [loading, setLoading] = useState(false);
+  const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
-    setLoading(true);
+  const request = async (data?: any) => {
+    setPending(true);
     try {
       const response = await axios.request<T>({
-        url: route,
+        url: apiUrl + route,
         method,
-        data: requestData,
+        data,
       });
 
-      setData(response.data);
+      successCallback?.(response.data);
     } catch (err) {
       // @ts-ignore
       setError(err.message || 'An error occurred');
+      // @ts-ignore
+      failedCallback?.(err.response?.data);
     } finally {
-      setLoading(false);
+      setPending(false);
     }
   };
 
   return {
-    data,
-    loading,
+    pending,
     error,
-    fetchData,
+    request,
   };
 };
 
