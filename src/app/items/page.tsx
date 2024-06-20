@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import useAPI from '@/hooks/useAPI';
 import { GET_ITEMS_EP, POST_CREATE_ITEM_EP } from '@/app/items/API/endpoint';
 import { useSnackbar } from '@/hooks/useSnackbar';
-import { Button, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { LoadingButton } from '@mui/lab';
 import { Popup } from '@/components/popup';
@@ -15,6 +15,9 @@ import { useToggle } from '@/hooks/useToggle';
 import { createItemSchema } from '@/app/items/constants';
 import { format } from 'date-fns';
 import { Skeleton } from '@/components/skeleton';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export default function Items() {
   const { generateSnackbar } = useSnackbar();
@@ -84,7 +87,7 @@ export default function Items() {
         <div className="mt-4 flex flex-col gap-y-3">
           {items.map((item) => (
             <div
-              className="flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3"
+              className="relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3"
               key={item._id}
             >
               <div className="flex gap-x-3">
@@ -106,6 +109,15 @@ export default function Items() {
                 <span className="text-gray-400">Created At: </span>
                 <span>{format(item.createdAt, 'MMMM do, yyyy')}</span>
               </div>
+
+              <Link
+                href={ROUTES['items'] + `/${item._id}`}
+                className="absolute top-1 right-1"
+              >
+                <IconButton>
+                  <ArrowForwardIosIcon />
+                </IconButton>
+              </Link>
             </div>
           ))}
         </div>
