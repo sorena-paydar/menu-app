@@ -74,6 +74,7 @@ export const Login = ({ switchTab }: Props) => {
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
+          type="password"
         />
 
         <LoadingButton type="submit" variant="contained" loading={pending}>

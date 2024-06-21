@@ -14,3 +14,10 @@ body {
   }
 }
 
+#layout {
+  min-width: 100%;
+
+  @media (min-width: 800px) {
+    min-width: 540px;
+  }
+}

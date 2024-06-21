@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Branch, CreateBranchInputs } from '@/types/branch';
 import useAPI from '@/hooks/useAPI';
 import { GET_BRANCH_EP, PUT_EDIT_BRANCH_EP } from '@/app/branches/API/endpoint';
@@ -15,12 +15,18 @@ import { branchSchema } from '@/constants/branch';
 import Typography from '@mui/material/Typography';
 import withAuth from '@/hoc/withAuth';
 import { Retry } from '@/components/retry';
+import { GroupList } from '@/components/groupList';
+import QRCode from 'qrcode.react';
+import { Popup } from '@/components/popup';
+import { ROUTES } from '@/constants/routes';
 
 function BranchDetails({
   params: { branchId },
 }: {
   params: { branchId: string };
 }) {
+  const qrCodeValue = window.location.origin + ROUTES['final'] + '/' + branchId;
+
   const {
     isOpen: isEditing,
     onClose: endEditing,
@@ -37,6 +43,7 @@ function BranchDetails({
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<CreateBranchInputs>({
     resolver: yupResolver(branchSchema),
     defaultValues: {
@@ -55,8 +62,7 @@ function BranchDetails({
       route: GET_BRANCH_EP({ branchId }),
       successCallback: ({ data }) => {
         setBranch(data);
-        setValue('name', data?.name);
-        setValue('location', data?.location);
+        reset(data);
       },
       failedCallback: (error: { message: string }) => {
         generateSnackbar({
@@ -91,7 +97,7 @@ function BranchDetails({
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: CreateBranchInputs) => {
     editBranchRequest(data);
   };
 
@@ -121,61 +127,61 @@ function BranchDetails({
         </div>
       </div>
 
-      {!isEditing && (
-        <div className="flex justify-end mt-4">
-          <Button
-            variant="contained"
-            color="info"
-            onClick={() => toggleEditBtn()}
-          >
-            Edit Branch
-          </Button>
-        </div>
-      )}
+      <div className="flex justify-end mt-4">
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => toggleEditBtn()}
+        >
+          Edit Branch
+        </Button>
+      </div>
 
-      {isEditing && (
-        <div className="mt-8">
-          <Typography variant="h5">Edit Branch Details</Typography>
+      <div className="mt-20 flex  flex-col  items-center justify-center">
+        <QRCode value={qrCodeValue} size={256} />
 
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-3">
-            <div className="flex flex-col gap-y-3">
-              <TextField
-                label="Name"
-                {...register('name')}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
+        <Typography className="mt-5" variant="h5">
+          Scan me :D
+        </Typography>
+      </div>
 
-              <TextField
-                label="Address"
-                {...register('location.address')}
-                error={!!errors.location?.address}
-                helperText={errors.location?.address?.message}
-              />
-            </div>
+      <Popup open={isEditing} onClose={endEditing} title="Edit Branch Details">
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-3">
+          <div className="flex flex-col gap-y-3">
+            <TextField
+              label="Name"
+              {...register('name')}
+              error={!!errors.name}
+              helperText={errors.name?.message}
+            />
 
-            <div className="flex gap-x-3 justify-end mt-4">
-              <Button
-                variant="outlined"
-                color="inherit"
-                onClick={() => endEditing()}
-                disabled={editBranchPending}
-              >
-                Discard
-              </Button>
+            <TextField
+              label="Address"
+              {...register('location.address')}
+              error={!!errors.location?.address}
+              helperText={errors.location?.address?.message}
+            />
 
-              <LoadingButton
-                variant="contained"
-                color="success"
-                type="submit"
-                loading={editBranchPending}
-              >
-                Submit XD
-              </LoadingButton>
-            </div>
-          </form>
-        </div>
-      )}
+            <GroupList
+              name="menuGroup"
+              setValue={setValue}
+              control={control}
+              errorMessage={errors.menuGroup?.message}
+            />
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-grey-200">
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              fullWidth
+              loading={editBranchPending}
+            >
+              Submit
+            </LoadingButton>
+          </div>
+        </form>
+      </Popup>
     </main>
   );
 }

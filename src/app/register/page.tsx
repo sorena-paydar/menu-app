@@ -49,7 +49,7 @@ export default function Register() {
   return (
     <div
       className={classnames(
-        'min-h-screen max-w-[500px] flex flex-col justify-center items-center px-8',
+        'flex flex-col justify-center items-center mt-40 px-5',
       )}
     >
       <Box className="border border-gray-200 rounded-lg px-5 py-4 w-full">

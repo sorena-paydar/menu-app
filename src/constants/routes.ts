@@ -6,4 +6,5 @@ export const ROUTES = {
   items: '/items',
   categories: '/categories',
   groups: '/groups',
+  final: '/final',
 };

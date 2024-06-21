@@ -5,8 +5,6 @@ import useAPI from '@/hooks/useAPI';
 import { GET_GROUPS_EP } from '@/app/groups/API/endpoint';
 
 export function useGroups() {
-  const { generateSnackbar } = useSnackbar();
-
   const [groups, setGroups] = useState<any[]>([]);
 
   const {
@@ -19,12 +17,6 @@ export function useGroups() {
     successCallback: ({ data }) => {
       setGroups(data);
     },
-    // failedCallback: (error: { message: string }) => {
-    //   generateSnackbar({
-    //     message: error.message,
-    //     variant: 'error',
-    //   });
-    // },
   });
 
   useEffect(() => {

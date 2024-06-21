@@ -17,7 +17,10 @@ export default function ClientLayout({
       <ThemeProvider theme={theme}>
         <SnackbarProvider maxSnack={3}>
           <Navbar />
-          {children}
+
+          <div className="flex justify-center">
+            <div id="layout">{children}</div>
+          </div>
         </SnackbarProvider>
       </ThemeProvider>
     </Provider>

@@ -46,6 +46,7 @@ function Home() {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm<CreateBranchInputs>({
     resolver: yupResolver(branchSchema),
     defaultValues: {
@@ -83,7 +84,7 @@ function Home() {
   };
 
   return (
-    <main className="flex flex-col px-5 relative">
+    <main className="flex flex-col px-5 pb-20 relative">
       <div className="flex justify-between items-center mt-8">
         <Typography variant="h5">Branches</Typography>
 
@@ -99,7 +100,7 @@ function Home() {
       {getBranchesPending ? (
         <Skeleton />
       ) : (
-        <div className="flex flex-col gap-y-3 mt-4">
+        <div className="flex flex-col gap-y-3 mt-4 max-h-300 overflow-y-auto">
           {branches.map((branch) => (
             <Link href={ROUTES['branches'] + `/${branch._id}`} key={branch._id}>
               <div className="border border-gray-200 rounded-lg px-3 py-2">
@@ -174,9 +175,10 @@ function Home() {
             />
 
             <GroupList
-              name="groups"
+              name="menuGroup"
+              setValue={setValue}
               control={control}
-              errorMessage={errors.groups?.message}
+              errorMessage={errors.menuGroup?.message}
             />
 
             <LoadingButton

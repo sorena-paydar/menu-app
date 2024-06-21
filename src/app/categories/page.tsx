@@ -73,34 +73,31 @@ function Categories() {
       ) : (
         <div className="mt-4 flex flex-col gap-y-3">
           {categories.map((category) => (
-            <div
-              className="relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3"
+            <Link
+              href={ROUTES['categories'] + `/${category._id}`}
               key={category._id}
             >
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Name: </span>
-                <h4>{category.name}</h4>
-              </div>
+              <div className="relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3">
+                <div className="flex gap-x-3">
+                  <span className="text-gray-400">Name: </span>
+                  <h4>{category.name}</h4>
+                </div>
 
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Created At: </span>
-                <span>{format(category.createdAt, 'MMMM do, yyyy')}</span>
-              </div>
+                <div className="flex gap-x-3">
+                  <span className="text-gray-400">Created At: </span>
+                  <span>{format(category.createdAt, 'MMMM do, yyyy')}</span>
+                </div>
 
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Items Count: </span>
-                <h4>{category.items.length}</h4>
-              </div>
+                <div className="flex gap-x-3">
+                  <span className="text-gray-400">Items Count: </span>
+                  <h4>{category.items.length}</h4>
+                </div>
 
-              <Link
-                href={ROUTES['categories'] + `/${category._id}`}
-                className="absolute top-1 right-1"
-              >
-                <IconButton>
+                <IconButton className="absolute top-1 right-1">
                   <ArrowForwardIosIcon />
                 </IconButton>
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
         </div>
       )}
