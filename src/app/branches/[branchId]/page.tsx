@@ -14,6 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { branchSchema } from '@/constants/branch';
 import Typography from '@mui/material/Typography';
 import withAuth from '@/hoc/withAuth';
+import { Retry } from '@/components/retry';
 
 function BranchDetails({
   params: { branchId },
@@ -100,6 +101,10 @@ function BranchDetails({
         <Skeleton />
       </div>
     );
+  }
+
+  if (!branch) {
+    return <Retry />;
   }
 
   return (

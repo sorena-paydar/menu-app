@@ -19,6 +19,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
 import withAuth from '@/hoc/withAuth';
+import { GroupList } from '@/components/groupList';
 
 function Home() {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -44,6 +45,7 @@ function Home() {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<CreateBranchInputs>({
     resolver: yupResolver(branchSchema),
     defaultValues: {
@@ -56,27 +58,25 @@ function Home() {
     },
   });
 
-  const {
-    request: createBranchRequest,
-    pending: createBranchPending,
-    error,
-  } = useAPI({
-    method: 'post',
-    route: POST_CREATE_BRANCH_EP,
-    successCallback: ({ data }) => {
-      generateSnackbar({
-        message: 'Branch created successfully.',
-        variant: 'success',
-      });
+  const { request: createBranchRequest, pending: createBranchPending } = useAPI(
+    {
+      method: 'post',
+      route: POST_CREATE_BRANCH_EP,
+      successCallback: ({ data }) => {
+        generateSnackbar({
+          message: 'Branch created successfully.',
+          variant: 'success',
+        });
 
-      setBranches((prevState) => [...prevState, data]);
-      reset();
-      onClose();
+        setBranches((prevState) => [...prevState, data]);
+        reset();
+        onClose();
+      },
+      failedCallback: (error: { message: string }) => {
+        generateSnackbar({ message: error.message, variant: 'error' });
+      },
     },
-    failedCallback: (error: { message: string }) => {
-      generateSnackbar({ message: error.message, variant: 'error' });
-    },
-  });
+  );
 
   const onSubmit = (data: CreateBranchInputs) => {
     createBranchRequest(data);
@@ -171,6 +171,12 @@ function Home() {
               {...register('location.address')}
               error={!!errors.location?.address}
               helperText={errors.location?.address?.message}
+            />
+
+            <GroupList
+              name="groups"
+              control={control}
+              errorMessage={errors.groups?.message}
             />
 
             <LoadingButton

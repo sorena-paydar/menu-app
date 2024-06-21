@@ -9,44 +9,20 @@ import { LoadingButton } from '@mui/lab';
 import { Popup } from '@/components/popup';
 import { format } from 'date-fns';
 import { Skeleton } from '@/components/skeleton';
-import Link from 'next/link';
-import { ROUTES } from '@/constants/routes';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import withAuth from '@/hoc/withAuth';
-import { CreateCategoryInput } from '@/types/category';
-import { POST_CREATE_CATEGORY_EP } from '@/app/categories/API/endpoint';
 import { useToggle } from '@/hooks/useToggle';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createCategorySchema } from '@/app/categories/constants';
-import { CreateCategoryItems } from '@/app/categories/components/items';
-import { GET_GROUPS_EP, POST_CREATE_GROUP_EP } from '@/app/groups/API/endpoint';
+import { POST_CREATE_GROUP_EP } from '@/app/groups/API/endpoint';
 import { CreateGroupInput, Group } from '@/types/group';
 import { createGroupSchema } from '@/app/groups/constants';
 import { CreateGroupCategories } from '@/app/groups/components/categories';
+import { useGroups } from '@/hooks/useGroups';
 
 function Groups() {
   const { generateSnackbar } = useSnackbar();
 
-  const [groups, setGroups] = useState<Group[]>([]);
-
-  const { request: getGroupsRequest, pending: getGroupsPending } = useAPI({
-    method: 'get',
-    route: GET_GROUPS_EP,
-    successCallback: ({ data }) => {
-      setGroups(data);
-    },
-    failedCallback: (error: { message: string }) => {
-      generateSnackbar({
-        message: error.message,
-        variant: 'error',
-      });
-    },
-  });
-
-  useEffect(() => {
-    getGroupsRequest();
-  }, []);
+  const { groups, getGroupsPending, setGroups } = useGroups();
 
   const { isOpen, onClose, onOpen } = useToggle();
 

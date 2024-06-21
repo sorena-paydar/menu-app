@@ -2,7 +2,7 @@
 
 import { useProfile } from '@/hooks/useProfile';
 import { Loading } from '@/components/loading';
-import { Button } from '@mui/material';
+import { Retry } from '@/components/retry';
 
 const withAuth = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
@@ -15,7 +15,7 @@ const withAuth = <P extends object>(
     }
 
     if (error) {
-      return <Button onClick={() => window.location.reload()}>Retry</Button>;
+      return <Retry />;
     }
 
     return <WrappedComponent {...props} />;

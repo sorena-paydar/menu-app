@@ -1,6 +1,11 @@
 import { Skeleton } from '@/components/skeleton';
 import { format } from 'date-fns';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import {
+  useFieldArray,
+  useFormContext,
+  useFormState,
+  useWatch,
+} from 'react-hook-form';
 import { Item } from '@/types/item';
 import classnames from 'classnames';
 import Typography from '@mui/material/Typography';
@@ -21,19 +26,21 @@ export const CreateGroupCategories = ({
   control,
   errorMessage,
 }: Props) => {
-  const { fields, append, remove } = useFieldArray({
+  const { append, remove } = useFieldArray({
     name,
     control,
   });
+
   const value = useWatch({ name, control }) || [];
 
   const { categories, getCategoriesPending } = useCategories();
 
   const selectItemHandler = ({ _id }: Category) => {
+    //@ts-ignore
     const index = value.findIndex((item: Category) => item._id === _id);
 
     if (index === -1) {
-      append({ _id, position: fields.length + 1 });
+      append({ _id, position: value.length + 1 });
       return;
     }
 
@@ -59,15 +66,16 @@ export const CreateGroupCategories = ({
       )}
 
       {categories.map((category: Category & { id: string }) => {
-        const isItemSelected = value.some(
-          (selectedItem: Group) => selectedItem._id === category._id,
+        const isCategorySelected = value.some(
+          (selectedCategory: Group) => selectedCategory._id === category._id,
         );
 
         return (
           <div
             className={classnames(
-              'relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3',
-              { 'border-blue-500': isItemSelected },
+              'relative flex flex-col border  rounded-lg p-4 gap-y-3',
+              { 'border-gray-200': !isCategorySelected },
+              { 'border-blue-500': isCategorySelected },
             )}
             key={category._id}
             onClick={() => selectItemHandler(category)}

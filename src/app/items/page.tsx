@@ -4,18 +4,22 @@ import { CreateItemInputs, Item } from '@/types/item';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useAPI from '@/hooks/useAPI';
-import { POST_CREATE_ITEM_EP } from '@/app/items/API/endpoint';
+import {
+  GET_ITEM_DETAILS_EP,
+  POST_CREATE_ITEM_EP,
+} from '@/app/items/API/endpoint';
 import { useSnackbar } from '@/hooks/useSnackbar';
 import { Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { LoadingButton } from '@mui/lab';
 import { Popup } from '@/components/popup';
 import { useToggle } from '@/hooks/useToggle';
-import { createItemSchema } from '@/app/items/constants';
+import { itemSchema } from '@/app/items/constants';
 import { Skeleton } from '@/components/skeleton';
 import withAuth from '@/hoc/withAuth';
 import { useItems } from '@/hooks/useItems';
 import { ItemPreview } from '@/app/items/components/preview';
+import { ROUTES } from '@/constants/routes';
 
 function Items() {
   const { generateSnackbar } = useSnackbar();
@@ -30,7 +34,7 @@ function Items() {
     handleSubmit,
     formState: { errors },
   } = useForm<CreateItemInputs>({
-    resolver: yupResolver(createItemSchema),
+    resolver: yupResolver(itemSchema),
   });
 
   const { request: createItemRequest, pending: createItemPending } = useAPI({
