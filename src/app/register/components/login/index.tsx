@@ -31,7 +31,6 @@ export const Login = ({ switchTab }: Props) => {
     method: 'post',
     route: POST_LOG_IN_EP,
     successCallback: (data: { data: { token: string } }) => {
-      console.log({ data });
       Cookies.set(COOKIES['authToken'], data.data.token);
       generateSnackbar({
         message: 'Logged In Successfully.',

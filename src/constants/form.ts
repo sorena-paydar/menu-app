@@ -59,4 +59,12 @@ export const ERROR_MESSAGES = {
       required: 'Item description is required',
     },
   },
+  category: {
+    name: {
+      required: 'Category name is required',
+    },
+    items: {
+      required: 'Must select at least one Item',
+    },
+  },
 };
