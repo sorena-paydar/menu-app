@@ -130,7 +130,7 @@ function Items() {
               variant="contained"
               loading={createItemPending}
             >
-              Create New Branch
+              Create New Item
             </LoadingButton>
           </div>
         </form>
