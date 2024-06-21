@@ -78,4 +78,4 @@ function Final({ params: { branchId } }: { params: { branchId: string } }) {
   );
 }
 
-export default withAuth(Final);
+export default Final;
