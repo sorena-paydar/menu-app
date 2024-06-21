@@ -15,6 +15,7 @@ import { branchSchema } from '@/constants/branch';
 import Typography from '@mui/material/Typography';
 import withAuth from '@/hoc/withAuth';
 import { Retry } from '@/components/retry';
+import { GroupList } from '@/components/groupList';
 
 function BranchDetails({
   params: { branchId },
@@ -36,6 +37,7 @@ function BranchDetails({
     reset,
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateBranchInputs>({
     resolver: yupResolver(branchSchema),
@@ -55,8 +57,7 @@ function BranchDetails({
       route: GET_BRANCH_EP({ branchId }),
       successCallback: ({ data }) => {
         setBranch(data);
-        setValue('name', data?.name);
-        setValue('location', data?.location);
+        reset(data);
       },
       failedCallback: (error: { message: string }) => {
         generateSnackbar({
@@ -151,6 +152,12 @@ function BranchDetails({
                 {...register('location.address')}
                 error={!!errors.location?.address}
                 helperText={errors.location?.address?.message}
+              />
+
+              <GroupList
+                name="groups"
+                control={control}
+                errorMessage={errors.groups?.message}
               />
             </div>
 

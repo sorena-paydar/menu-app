@@ -107,7 +107,7 @@ function ItemDetails({ params: { itemId } }: { params: { itemId: string } }) {
     editItemRequest(data);
   };
 
-  if (getItemDetailsPending || !item) {
+  if (getItemDetailsPending) {
     return (
       <div className="px-5 mt-8">
         <Skeleton />
