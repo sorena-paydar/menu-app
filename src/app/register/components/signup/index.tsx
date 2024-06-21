@@ -61,7 +61,6 @@ export const Signup = ({ switchTab }: Props) => {
       <div className="flex flex-col gap-y-3">
         <div className="flex gap-x-2">
           <TextField
-            required
             label="First Name"
             {...register('firstName')}
             error={!!errors.firstName}
@@ -70,7 +69,6 @@ export const Signup = ({ switchTab }: Props) => {
           />
 
           <TextField
-            required
             label="Last Name"
             {...register('lastName')}
             error={!!errors.lastName}
@@ -80,7 +78,6 @@ export const Signup = ({ switchTab }: Props) => {
         </div>
 
         <TextField
-          required
           label="Email"
           {...register('email')}
           error={!!errors.email}
@@ -88,7 +85,6 @@ export const Signup = ({ switchTab }: Props) => {
         />
 
         <TextField
-          required
           label="Password"
           {...register('password')}
           error={!!errors.password}
@@ -97,7 +93,6 @@ export const Signup = ({ switchTab }: Props) => {
         />
 
         <TextField
-          required
           label="Phone Number"
           {...register('phoneNumber')}
           error={!!errors.phoneNumber}
@@ -105,7 +100,6 @@ export const Signup = ({ switchTab }: Props) => {
         />
 
         <TextField
-          required
           label="Brand Name"
           {...register('brandName')}
           error={!!errors.brandName}
