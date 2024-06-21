@@ -133,6 +133,16 @@ function Home() {
         </Link>
       </div>
 
+      <div className="flex justify-between mt-8">
+        <Typography variant="h5">Categories</Typography>
+
+        <Link href={ROUTES['categories']}>
+          <Button variant="contained" color="inherit">
+            <Typography variant="body1">Go to Categories</Typography>
+          </Button>
+        </Link>
+      </div>
+
       <Popup open={isOpen} onClose={onClose} title="Create New Branch">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-3">

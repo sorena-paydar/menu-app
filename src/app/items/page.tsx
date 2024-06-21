@@ -19,29 +19,13 @@ import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import withAuth from '@/hoc/withAuth';
+import { useItems } from '@/hooks/useItems';
+import { ItemPreview } from '@/app/items/components/preview';
 
 function Items() {
   const { generateSnackbar } = useSnackbar();
 
-  const [items, setItems] = useState<Item[]>([]);
-
-  const { request: getItemsRequest, pending: getItemsPending } = useAPI({
-    method: 'get',
-    route: GET_ITEMS_EP,
-    successCallback: ({ data }) => {
-      setItems(data);
-    },
-    failedCallback: (error: { message: string }) => {
-      generateSnackbar({
-        message: error.message,
-        variant: 'error',
-      });
-    },
-  });
-
-  useEffect(() => {
-    getItemsRequest();
-  }, []);
+  const { items, getItemsPending, setItems } = useItems();
 
   const { isOpen, onClose, onOpen } = useToggle();
 
@@ -84,43 +68,16 @@ function Items() {
 
       {getItemsPending && <Skeleton />}
 
-      {items.length > 0 && (
+      {items.length > 0 ? (
         <div className="mt-4 flex flex-col gap-y-3">
           {items.map((item) => (
-            <div
-              className="relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3"
-              key={item._id}
-            >
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Name: </span>
-                <h4>{item.name}</h4>
-              </div>
-
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Price: </span>
-                <span>${item.price}</span>
-              </div>
-
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Description: </span>
-                <span>{item.description}</span>
-              </div>
-
-              <div className="flex gap-x-3">
-                <span className="text-gray-400">Created At: </span>
-                <span>{format(item.createdAt, 'MMMM do, yyyy')}</span>
-              </div>
-
-              <Link
-                href={ROUTES['items'] + `/${item._id}`}
-                className="absolute top-1 right-1"
-              >
-                <IconButton>
-                  <ArrowForwardIosIcon />
-                </IconButton>
-              </Link>
-            </div>
+            <ItemPreview key={item._id} {...item} />
           ))}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-y-3 items-center justify-center mt-8">
+          <Typography variant="h6">You have no Items!</Typography>
+          <Typography variant="body1">Create one!</Typography>
         </div>
       )}
 

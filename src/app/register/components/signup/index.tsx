@@ -40,7 +40,6 @@ export const Signup = ({ switchTab }: Props) => {
       delay(() => (window.location.href = '/'), 1000);
     },
     failedCallback: (error: { message: string }) => {
-      console.log(error.message);
       generateSnackbar({
         message: error.message,
         variant: 'info',
