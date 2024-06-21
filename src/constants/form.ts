@@ -67,4 +67,12 @@ export const ERROR_MESSAGES = {
       required: 'Must select at least one Item',
     },
   },
+  groups: {
+    name: {
+      required: 'Group name is required',
+    },
+    categories: {
+      required: 'Must select at least one Category',
+    },
+  },
 };

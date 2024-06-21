@@ -1,23 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { CreateItemInputs, Item } from '@/types/item';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useAPI from '@/hooks/useAPI';
-import { GET_ITEMS_EP, POST_CREATE_ITEM_EP } from '@/app/items/API/endpoint';
+import { POST_CREATE_ITEM_EP } from '@/app/items/API/endpoint';
 import { useSnackbar } from '@/hooks/useSnackbar';
-import { Button, IconButton, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { LoadingButton } from '@mui/lab';
 import { Popup } from '@/components/popup';
 import { useToggle } from '@/hooks/useToggle';
 import { createItemSchema } from '@/app/items/constants';
-import { format } from 'date-fns';
 import { Skeleton } from '@/components/skeleton';
-import Link from 'next/link';
-import { ROUTES } from '@/constants/routes';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import withAuth from '@/hoc/withAuth';
 import { useItems } from '@/hooks/useItems';
 import { ItemPreview } from '@/app/items/components/preview';
@@ -66,18 +61,18 @@ function Items() {
     <main className="flex flex-col px-5 mt-8">
       <Typography variant="h5">List of Items</Typography>
 
-      {getItemsPending && <Skeleton />}
-
-      {items.length > 0 ? (
+      {getItemsPending ? (
+        <Skeleton />
+      ) : items.length === 0 ? (
+        <div className="flex flex-col gap-y-3 items-center justify-center mt-8">
+          <Typography variant="h6">You have no Items!</Typography>
+          <Typography variant="body1">Create one!</Typography>
+        </div>
+      ) : (
         <div className="mt-4 flex flex-col gap-y-3">
           {items.map((item) => (
             <ItemPreview key={item._id} {...item} />
           ))}
-        </div>
-      ) : (
-        <div className="flex flex-col gap-y-3 items-center justify-center mt-8">
-          <Typography variant="h6">You have no Items!</Typography>
-          <Typography variant="body1">Create one!</Typography>
         </div>
       )}
 

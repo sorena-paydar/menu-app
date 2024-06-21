@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import useAPI from '@/hooks/useAPI';
 import { useSnackbar } from '@/hooks/useSnackbar';
 import { Button, IconButton, TextField } from '@mui/material';
@@ -19,12 +20,33 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createCategorySchema } from '@/app/categories/constants';
 import { CreateCategoryItems } from '@/app/categories/components/items';
-import { useCategories } from '@/hooks/useCategories';
+import { GET_GROUPS_EP, POST_CREATE_GROUP_EP } from '@/app/groups/API/endpoint';
+import { CreateGroupInput, Group } from '@/types/group';
+import { createGroupSchema } from '@/app/groups/constants';
+import { CreateGroupCategories } from '@/app/groups/components/categories';
 
-function Categories() {
+function Groups() {
   const { generateSnackbar } = useSnackbar();
 
-  const { categories, getCategoriesPending, setCategories } = useCategories();
+  const [groups, setGroups] = useState<Group[]>([]);
+
+  const { request: getGroupsRequest, pending: getGroupsPending } = useAPI({
+    method: 'get',
+    route: GET_GROUPS_EP,
+    successCallback: ({ data }) => {
+      setGroups(data);
+    },
+    failedCallback: (error: { message: string }) => {
+      generateSnackbar({
+        message: error.message,
+        variant: 'error',
+      });
+    },
+  });
+
+  useEffect(() => {
+    getGroupsRequest();
+  }, []);
 
   const { isOpen, onClose, onOpen } = useToggle();
 
@@ -34,72 +56,62 @@ function Categories() {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<CreateCategoryInput>({
-    resolver: yupResolver(createCategorySchema),
+  } = useForm<CreateGroupInput>({
+    resolver: yupResolver(createGroupSchema),
   });
 
-  const { request: createCategoryRequest, pending: createCategoryPending } =
-    useAPI({
-      method: 'post',
-      route: POST_CREATE_CATEGORY_EP,
-      successCallback: ({ data }) => {
-        setCategories((prevState) => [...prevState, data]);
-        onClose();
-        reset();
-      },
-      failedCallback: (error: { message: string }) => {
-        generateSnackbar({
-          message: error.message,
-          variant: 'error',
-        });
-      },
-    });
+  const { request: createGroupRequest, pending: createGroupPending } = useAPI({
+    method: 'post',
+    route: POST_CREATE_GROUP_EP,
+    successCallback: ({ data }) => {
+      setGroups((prevState) => [...prevState, data]);
+      onClose();
+      reset();
+    },
+    failedCallback: (error: { message: string }) => {
+      generateSnackbar({
+        message: error.message,
+        variant: 'error',
+      });
+    },
+  });
 
-  const onSubmit = (data: CreateCategoryInput) => {
-    createCategoryRequest(data);
+  const onSubmit = (data: CreateGroupInput) => {
+    createGroupRequest(data);
   };
 
   return (
     <main className="flex flex-col px-5 mt-8">
-      <Typography variant="h5">List of Categories</Typography>
+      <Typography variant="h5">List of Groups</Typography>
 
-      {getCategoriesPending ? (
+      {getGroupsPending ? (
         <Skeleton />
-      ) : categories.length === 0 ? (
+      ) : groups.length === 0 ? (
         <div className="flex flex-col gap-y-3 items-center justify-center mt-8">
-          <Typography variant="h6">You have no Categories!</Typography>
+          <Typography variant="h6">You have no Groups!</Typography>
           <Typography variant="body1">Create one!</Typography>
         </div>
       ) : (
         <div className="mt-4 flex flex-col gap-y-3">
-          {categories.map((category) => (
+          {groups.map((group) => (
             <div
               className="relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3"
-              key={category._id}
+              key={group._id}
             >
               <div className="flex gap-x-3">
                 <span className="text-gray-400">Name: </span>
-                <h4>{category.name}</h4>
+                <h4>{group.name}</h4>
               </div>
 
               <div className="flex gap-x-3">
                 <span className="text-gray-400">Created At: </span>
-                <span>{format(category.createdAt, 'MMMM do, yyyy')}</span>
+                <span>{format(group.createdAt, 'MMMM do, yyyy')}</span>
               </div>
 
               <div className="flex gap-x-3">
                 <span className="text-gray-400">Items Count: </span>
-                <h4>{category.items.length}</h4>
+                <h4>{group.categories.length}</h4>
               </div>
-
-              <Link
-                href={ROUTES['categories'] + `/${category._id}`}
-                className="absolute top-1 right-1"
-              >
-                <IconButton>
-                  <ArrowForwardIosIcon />
-                </IconButton>
-              </Link>
             </div>
           ))}
         </div>
@@ -112,11 +124,11 @@ function Categories() {
           size="large"
           onClick={() => onOpen()}
         >
-          Create Category
+          Create Group
         </Button>
       </div>
 
-      <Popup open={isOpen} onClose={onClose} title="Create New Category">
+      <Popup open={isOpen} onClose={onClose} title="Create New Group">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-3">
             <TextField
@@ -126,18 +138,18 @@ function Categories() {
               helperText={errors.name?.message}
             />
 
-            <CreateCategoryItems
-              name={'items'}
+            <CreateGroupCategories
+              name={'categories'}
               control={control}
-              errorMessage={errors.items?.message}
+              errorMessage={errors.categories?.message}
             />
 
             <LoadingButton
               type="submit"
               variant="contained"
-              loading={createCategoryPending}
+              loading={createGroupPending}
             >
-              Create New Category
+              Create New Group
             </LoadingButton>
           </div>
         </form>
@@ -146,4 +158,4 @@ function Categories() {
   );
 }
 
-export default withAuth(Categories);
+export default withAuth(Groups);
