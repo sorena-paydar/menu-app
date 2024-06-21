@@ -61,7 +61,6 @@ export const Login = ({ switchTab }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-y-3">
         <TextField
-          required
           label="Email"
           {...register('email')}
           error={!!errors.email}
@@ -69,7 +68,6 @@ export const Login = ({ switchTab }: Props) => {
         />
 
         <TextField
-          required
           label="Password"
           {...register('password')}
           error={!!errors.password}
