@@ -3,7 +3,7 @@ import { ERROR_MESSAGES } from '@/constants/form';
 
 const MAX_DESCRIPTION_CHARACTER = 200;
 
-export const createItemSchema = yup.object().shape({
+export const itemSchema = yup.object().shape({
   name: yup.string().required(ERROR_MESSAGES.item.name.required),
   picture: yup.string().required(ERROR_MESSAGES.item.picture.required),
   price: yup

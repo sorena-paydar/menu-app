@@ -37,8 +37,15 @@ const useApiRequest = <T>({
     } catch (err) {
       // @ts-ignore
       setError(err.message || 'An error occurred');
+
       // @ts-ignore
-      failedCallback?.(err.response?.data);
+      if (err.response?.status === 500) {
+        // @ts-ignore
+        failedCallback?.({ message: 'Something went wrong!' });
+      } else {
+        // @ts-ignore
+        failedCallback?.(err.response?.data);
+      }
     } finally {
       setPending(false);
     }

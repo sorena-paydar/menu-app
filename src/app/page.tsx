@@ -3,7 +3,7 @@
 import Typography from '@mui/material/Typography';
 import useAPI from '@/hooks/useAPI';
 import { GET_BRANCHES_EP, POST_CREATE_BRANCH_EP } from '@/API/endpoint';
-import { Button, IconButton, TextField } from '@mui/material';
+import { Button, Divider, IconButton, TextField } from '@mui/material';
 import { useToggle } from '@/hooks/useToggle';
 import { useSnackbar } from '@/hooks/useSnackbar';
 import { useForm } from 'react-hook-form';
@@ -19,6 +19,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
 import withAuth from '@/hoc/withAuth';
+import { GroupList } from '@/components/groupList';
 
 function Home() {
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -44,6 +45,7 @@ function Home() {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<CreateBranchInputs>({
     resolver: yupResolver(branchSchema),
     defaultValues: {
@@ -56,27 +58,25 @@ function Home() {
     },
   });
 
-  const {
-    request: createBranchRequest,
-    pending: createBranchPending,
-    error,
-  } = useAPI({
-    method: 'post',
-    route: POST_CREATE_BRANCH_EP,
-    successCallback: ({ data }) => {
-      generateSnackbar({
-        message: 'Branch created successfully.',
-        variant: 'success',
-      });
+  const { request: createBranchRequest, pending: createBranchPending } = useAPI(
+    {
+      method: 'post',
+      route: POST_CREATE_BRANCH_EP,
+      successCallback: ({ data }) => {
+        generateSnackbar({
+          message: 'Branch created successfully.',
+          variant: 'success',
+        });
 
-      setBranches((prevState) => [...prevState, data]);
-      reset();
-      onClose();
+        setBranches((prevState) => [...prevState, data]);
+        reset();
+        onClose();
+      },
+      failedCallback: (error: { message: string }) => {
+        generateSnackbar({ message: error.message, variant: 'error' });
+      },
     },
-    failedCallback: (error: { message: string }) => {
-      generateSnackbar({ message: error.message, variant: 'error' });
-    },
-  });
+  );
 
   const onSubmit = (data: CreateBranchInputs) => {
     createBranchRequest(data);
@@ -101,47 +101,60 @@ function Home() {
       ) : (
         <div className="flex flex-col gap-y-3 mt-4">
           {branches.map((branch) => (
-            <div
-              className="border border-gray-200 rounded-lg px-3 py-2"
-              key={branch._id}
-            >
-              <div className="flex justify-between items-center">
-                <Typography variant="body1">{branch.name}</Typography>
+            <Link href={ROUTES['branches'] + `/${branch._id}`} key={branch._id}>
+              <div className="border border-gray-200 rounded-lg px-3 py-2">
+                <div className="flex justify-between items-center">
+                  <Typography variant="body1">{branch.name}</Typography>
 
-                <Link href={ROUTES['branches'] + `/${branch._id}`}>
                   <IconButton>
                     <ArrowForwardIosIcon />
                   </IconButton>
-                </Link>
-              </div>
+                </div>
 
-              <Typography variant="body2" color="textSecondary">
-                {branch.location.address}
-              </Typography>
-            </div>
+                <Typography variant="body2" color="textSecondary">
+                  {branch.location.address}
+                </Typography>
+              </div>
+            </Link>
           ))}
         </div>
       )}
 
-      <div className="flex justify-between mt-8">
-        <Typography variant="h5">Items</Typography>
+      <Divider className="mt-4" />
 
-        <Link href={ROUTES['items']}>
-          <Button variant="contained" color="inherit">
-            <Typography variant="body1">Go to items</Typography>
-          </Button>
-        </Link>
-      </div>
+      <Link href={ROUTES['items']}>
+        <div className="flex justify-between items-center mt-6">
+          <Typography variant="h5">Items</Typography>
 
-      <div className="flex justify-between mt-8">
-        <Typography variant="h5">Categories</Typography>
+          <IconButton>
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+      </Link>
 
-        <Link href={ROUTES['categories']}>
-          <Button variant="contained" color="inherit">
-            <Typography variant="body1">Go to Categories</Typography>
-          </Button>
-        </Link>
-      </div>
+      <Divider className="mt-4" />
+
+      <Link href={ROUTES['categories']}>
+        <div className="flex justify-between items-center mt-6">
+          <Typography variant="h5">Categories</Typography>
+
+          <IconButton>
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+      </Link>
+
+      <Divider className="mt-4" />
+
+      <Link href={ROUTES['groups']}>
+        <div className="flex justify-between items-center mt-6">
+          <Typography variant="h5">Groups</Typography>
+
+          <IconButton>
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+      </Link>
 
       <Popup open={isOpen} onClose={onClose} title="Create New Branch">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -158,6 +171,12 @@ function Home() {
               {...register('location.address')}
               error={!!errors.location?.address}
               helperText={errors.location?.address?.message}
+            />
+
+            <GroupList
+              name="groups"
+              control={control}
+              errorMessage={errors.groups?.message}
             />
 
             <LoadingButton

@@ -16,4 +16,5 @@ export const branchSchema = yup.object().shape({
         .required(ERROR_MESSAGES.branch.location.coordinates.lng.required),
     }),
   }),
+  groups: yup.array(),
 });

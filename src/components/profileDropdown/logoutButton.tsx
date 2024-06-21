@@ -6,8 +6,11 @@ import { LoadingButton } from '@mui/lab';
 import { COOKIES } from '@/constants/auth';
 import Cookies from 'js-cookie';
 import { ROUTES } from '@/constants/routes';
+import { useRouter } from 'next/navigation';
 
 export const LogoutButton = () => {
+  const router = useRouter();
+
   const { generateSnackbar } = useSnackbar();
 
   const { request: logoutRequest, pending } = useAPI({
@@ -15,7 +18,7 @@ export const LogoutButton = () => {
     route: POST_LOGOUT_EP,
     successCallback: ({ data }) => {
       Cookies.remove(COOKIES['authToken']);
-      window.location.href = ROUTES['register'];
+      router.push(ROUTES['register']);
     },
     failedCallback: (error: { message: string }) => {
       generateSnackbar({

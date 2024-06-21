@@ -7,6 +7,7 @@ export type CreateBranchInputs = {
       lng: number;
     };
   };
+  groups?: { _id: string; position: number }[];
 };
 
 export type Branch = {

@@ -5,8 +5,12 @@ import Typography from '@mui/material/Typography';
 import ProfileDropdown from '@/components/profileDropdown';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
+import { selectProfile } from '@/store/slices/profile';
+import { useSelector } from 'react-redux';
 
 export const Navbar = () => {
+  const { profile } = useSelector(selectProfile);
+
   return (
     <AppBar position="fixed">
       <Toolbar className="flex justify-between">
@@ -16,7 +20,7 @@ export const Navbar = () => {
           </Typography>
         </Link>
 
-        <ProfileDropdown />
+        {profile && <ProfileDropdown />}
       </Toolbar>
     </AppBar>
   );

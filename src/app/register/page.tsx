@@ -12,6 +12,7 @@ import classnames from 'classnames';
 import Cookies from 'js-cookie';
 import { COOKIES } from '@/constants/auth';
 import { ROUTES } from '@/constants/routes';
+import { useRouter } from 'next/navigation';
 
 export type RegisterTabs = Record<
   'signup' | 'login',
@@ -30,6 +31,7 @@ const registerTabs: RegisterTabs = {
 };
 
 export default function Register() {
+  const router = useRouter();
   const [tabValue, setTabValue] = useState<keyof RegisterTabs>('signup');
 
   const switchTab = (tab: keyof RegisterTabs) => {
@@ -39,7 +41,7 @@ export default function Register() {
   const authToken = Cookies.get(COOKIES['authToken']);
 
   if (authToken) {
-    window.location.href = ROUTES['home'];
+    router.push(ROUTES['home']);
 
     return <span />;
   }
@@ -47,7 +49,7 @@ export default function Register() {
   return (
     <div
       className={classnames(
-        'min-h-screen flex flex-col justify-center items-center px-8',
+        'min-h-screen max-w-[500px] flex flex-col justify-center items-center px-8',
       )}
     >
       <Box className="border border-gray-200 rounded-lg px-5 py-4 w-full">

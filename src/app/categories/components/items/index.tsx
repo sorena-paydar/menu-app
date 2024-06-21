@@ -60,7 +60,8 @@ export const CreateCategoryItems = ({ name, control, errorMessage }: Props) => {
         return (
           <div
             className={classnames(
-              'relative flex flex-col border border-gray-200 rounded-lg p-4 gap-y-3',
+              'relative flex flex-col border rounded-lg p-4 gap-y-3',
+              { 'border-gray-200 ': !isItemSelected },
               { 'border-blue-500': isItemSelected },
             )}
             key={item._id}

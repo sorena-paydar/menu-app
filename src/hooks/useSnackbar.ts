@@ -18,7 +18,11 @@ const useSnackbar = () => {
     variant = 'default',
     autoHideDuration = 3000,
   }: Snackbar) => {
-    enqueueSnackbar(message, { variant, autoHideDuration });
+    try {
+      enqueueSnackbar(message, { variant, autoHideDuration });
+    } catch (err) {
+      enqueueSnackbar('Something went wrong', { variant, autoHideDuration });
+    }
   };
 
   return {

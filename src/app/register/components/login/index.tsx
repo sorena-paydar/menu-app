@@ -11,12 +11,16 @@ import Cookies from 'js-cookie';
 import { delay } from 'lodash';
 import { RegisterTabs } from '@/app/register/page';
 import { COOKIES } from '@/constants/auth';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 interface Props {
   switchTab: (value: keyof RegisterTabs) => void;
 }
 
 export const Login = ({ switchTab }: Props) => {
+  const router = useRouter();
+
   const { generateSnackbar } = useSnackbar();
 
   const {
@@ -37,7 +41,7 @@ export const Login = ({ switchTab }: Props) => {
         variant: 'success',
       });
 
-      delay(() => (window.location.href = '/'), 1000);
+      delay(() => router.push(ROUTES['home']), 1000);
     },
     failedCallback: (error: { message: string }) => {
       generateSnackbar({
