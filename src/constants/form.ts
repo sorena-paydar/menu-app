@@ -67,7 +67,7 @@ export const ERROR_MESSAGES = {
       required: 'Must select at least one Item',
     },
   },
-  groups: {
+  menuGroup: {
     name: {
       required: 'Group name is required',
     },

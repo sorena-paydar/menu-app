@@ -66,6 +66,7 @@ export const Signup = ({ switchTab }: Props) => {
             {...register('firstName')}
             error={!!errors.firstName}
             helperText={errors.firstName?.message}
+            fullWidth
           />
 
           <TextField
@@ -74,6 +75,7 @@ export const Signup = ({ switchTab }: Props) => {
             {...register('lastName')}
             error={!!errors.lastName}
             helperText={errors.lastName?.message}
+            fullWidth
           />
         </div>
 
@@ -91,6 +93,7 @@ export const Signup = ({ switchTab }: Props) => {
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
+          type="password"
         />
 
         <TextField

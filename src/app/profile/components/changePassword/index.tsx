@@ -63,6 +63,7 @@ export const ChangePassword = () => {
             {...register('newPassword')}
             error={!!errors.newPassword}
             helperText={errors.newPassword?.message}
+            type="password"
           />
 
           <TextField
@@ -70,6 +71,7 @@ export const ChangePassword = () => {
             {...register('newPasswordConfirm')}
             error={!!errors.newPasswordConfirm}
             helperText={errors.newPasswordConfirm?.message}
+            type="password"
           />
         </div>
 

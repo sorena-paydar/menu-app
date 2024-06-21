@@ -1,6 +1,6 @@
 import { useGroups } from '@/hooks/useGroups';
 import { Skeleton } from '@/components/skeleton';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
@@ -10,28 +10,22 @@ import { format } from 'date-fns';
 
 interface Props {
   name: string;
+  setValue: any;
   control: any;
   errorMessage?: string;
 }
 
-export const GroupList = ({ name, control, errorMessage }: Props) => {
-  const { fields, append, remove } = useFieldArray({
-    name,
-    control,
-  });
-  const value = useWatch({ name, control }) || [];
+export const GroupList = ({ name, setValue, control, errorMessage }: Props) => {
+  const value = useWatch({ name, control }) || null;
 
   const { groups, getGroupsPending, setGroups } = useGroups();
 
   const selectGroupHandler = ({ _id }: Group) => {
-    const index = value.findIndex((item: Group) => item._id === _id);
-
-    if (index === -1) {
-      append({ _id, position: fields.length + 1 });
+    if (value && value === _id) {
+      setValue(name, null);
       return;
     }
-
-    remove(index);
+    setValue(name, _id);
   };
 
   if (getGroupsPending) return <Skeleton />;
@@ -52,9 +46,7 @@ export const GroupList = ({ name, control, errorMessage }: Props) => {
       )}
 
       {groups.map((group: Group & { id: string }) => {
-        const isGroupSelected = value.some(
-          (selectedGroup: Group) => selectedGroup._id === group._id,
-        );
+        const isGroupSelected = group._id === value;
 
         return (
           <div

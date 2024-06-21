@@ -1,5 +1,5 @@
 export type AddItemCategory = {
-  _id: string;
+  _id?: string;
   position: number;
 };
 

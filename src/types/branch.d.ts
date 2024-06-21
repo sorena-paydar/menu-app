@@ -7,7 +7,7 @@ export type CreateBranchInputs = {
       lng: number;
     };
   };
-  groups?: { _id: string; position: number }[];
+  menuGroup?: string | null;
 };
 
 export type Branch = {
